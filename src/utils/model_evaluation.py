@@ -74,33 +74,33 @@ from sklearn.compose import make_column_selector as selector
 from sklearn.preprocessing import (
     RobustScaler, OneHotEncoder, StandardScaler, OrdinalEncoder, Normalizer, MinMaxScaler
 )
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import make_pipeline, Pipeline
+# from sklearn.compose import ColumnTransformer
+# from sklearn.pipeline import make_pipeline, Pipeline
 
 ######################### Split Data ###########################
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_validate
+# from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import cross_validate
 
 ######################### Missing Values #######################
-import missingno as msno
+# import missingno as msno
 
 
 ############################# Models ############################
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.experimental import enable_hist_gradient_boosting
-from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RepeatedStratifiedKFold
-from sklearn.model_selection import StratifiedKFold
-from catboost import CatBoostClassifier
-from xgboost import XGBClassifier
+# from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.ensemble import HistGradientBoostingClassifier
+# from sklearn.experimental import enable_hist_gradient_boosting
+# from sklearn.naive_bayes import GaussianNB
+# from sklearn.model_selection import cross_val_score
+# from sklearn.model_selection import RepeatedStratifiedKFold
+# from sklearn.model_selection import StratifiedKFold
+# from catboost import CatBoostClassifier
+# from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
 
 ######################### Hyperparameters #########################
-import optuna
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV 
+# import optuna
+# from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 ########################## User Packages ##########################
 # from utils import FeatureSelection
