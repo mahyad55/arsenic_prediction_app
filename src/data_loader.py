@@ -39,4 +39,3 @@ y_huc_results = y_huc_results.drop('pred', axis=1, errors='ignore')
 
 y_train_pred_proba = model.predict_proba(X_train)[:,1]
 y_test_pred_proba = model.predict_proba(X_test)[:,1]
-
