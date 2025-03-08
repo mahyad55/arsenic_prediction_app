@@ -1,4 +1,4 @@
-# arsenic_prediction_app
+# Arsenic prediction app
 <div style="text-align: justify;">
 This study applies machine learning to predict arsenic (As) levels in groundwater across U.S. subwatersheds.
 SHAP analysis identified key factors influencing As contamination, including land cover, agriculture,
