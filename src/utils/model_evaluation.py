@@ -653,7 +653,47 @@ class ModelEvaluation:
         if show:
             plt.show()
         return fig
-    
+
+
+    def metric_auc(self, y_train, y_test, y_train_pred_proba, y_test_pred_proba):
+
+        fpr, tpr, _ = roc_curve(y_train, y_train_pred_proba)
+        roc_auc_scores_train = auc(fpr, tpr)
+
+        fpr, tpr, _ = roc_curve(y_test, y_test_pred_proba)
+        roc_auc_scores_test = auc(fpr, tpr)
+
+        return roc_auc_scores_train, roc_auc_scores_test
+
+    def metric_ks(self, y_train, y_test, y_train_pred_proba, y_test_pred_proba):
+
+        data_ks = pd.DataFrame()
+        data_ks['true_label'] = y_train
+        data_ks['predicted_proba'] = y_train_pred_proba
+        # Sort the probabilities
+        data_ks = data_ks.sort_values(by='predicted_proba')
+        data_ks = data_ks.reset_index(drop=True)
+        # Separate the probabilities for each class (0 and 1)
+        cdf_0 = np.cumsum(data_ks['true_label'] == 0) / sum(data_ks['true_label'] == 0)
+        cdf_1 = np.cumsum(data_ks['true_label'] == 1) / sum(data_ks['true_label'] == 1)
+        # Compute the KS statistic (the maximum difference between the two CDFs)
+        ks_stat_train = np.max(np.abs(cdf_0 - cdf_1))
+
+        data_ks = pd.DataFrame()
+        data_ks['true_label'] = y_test
+        data_ks['predicted_proba'] = y_test_pred_proba
+        # Sort the probabilities
+        data_ks = data_ks.sort_values(by='predicted_proba')
+        data_ks = data_ks.reset_index(drop=True)
+        # Separate the probabilities for each class (0 and 1)
+        cdf_0 = np.cumsum(data_ks['true_label'] == 0) / sum(data_ks['true_label'] == 0)
+        cdf_1 = np.cumsum(data_ks['true_label'] == 1) / sum(data_ks['true_label'] == 1)
+        # Compute the KS statistic (the maximum difference between the two CDFs)
+        ks_stat_test = np.max(np.abs(cdf_0 - cdf_1))
+
+
+        return ks_stat_train, ks_stat_test
+
     def calibrationCurve(self, 
             y_train, y_train_pred_proba, y_test, y_test_pred_proba,
             num_bins=10, strategy='uniform',annot_text=True,
@@ -895,11 +935,17 @@ class ModelEvaluation:
             bar.set_hatch(hatch_patterns[category])
         
         # show values on top of bars as percentages with specified font settings
-        for bar, percentage in zip(bars.patches, num_target_labels['percentage']):
+        # for bar, percentage in zip(bars.patches, num_target_labels['percentage']):
+        #     height = bar.get_height()
+        #     plt.text(bar.get_x() + bar.get_width() / 2, height*1.01, f'{percentage:.1%}',
+        #              ha='center', va='bottom', fontsize=12, family='Arial')
+
+        # show values on top of bars as percentages with specified font settings
+        for bar, count in zip(bars.patches, num_target_labels['count']):
             height = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width() / 2, height*1.01, f'{percentage:.1%}', 
+            plt.text(bar.get_x() + bar.get_width() / 2, height*1.01, f'count: {count:,.0f}',
                      ha='center', va='bottom', fontsize=12, family='Arial')
-        
+
         # Add gridlines for better readability
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         
