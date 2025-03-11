@@ -7,9 +7,12 @@ Created on Wed Mar  5 11:57:38 2025
 
 import plotly.express as px
 import numpy as np
+import pandas as pd
 import folium
 from folium.plugins import HeatMap
 from branca.colormap import linear
+from sklearn.metrics import roc_curve, auc
+
 
 # %% define clasa
 class StreamLit:
@@ -137,3 +140,25 @@ class StreamLit:
         ).add_to(mymap)
         
         return mymap
+
+    # Function to apply heatmap colors and adjust font color
+    def heatmap_style(self, df, val):
+        """Apply heatmap background and font color based on value"""
+        if isinstance(val, (int, float)):  # Ensure it's a number
+            if val > 1:  # If it's 'support', return default style (no heatmap)
+                return "text-align: center;"
+
+            # Normalize value for color scaling
+            norm_val = (val - df.iloc[:, :-1].min().min()) / \
+                       (df.iloc[:, :-1].max().max() - df.iloc[:, :-1].min().min())
+
+            # Generate RGB from red to green
+            red = int(255 * (1 - norm_val))
+            green = int(255 * norm_val)
+            blue = 0  # No blue component
+
+            # Choose font color: white for dark backgrounds, black for light backgrounds
+            brightness = (red * 0.299 + green * 0.587 + blue * 0.114)
+            font_color = "black" if brightness > 127 else "white"
+
+            return f"background-color: rgb({red},{green},{blue}); color: {font_color}; text-align: center;"
